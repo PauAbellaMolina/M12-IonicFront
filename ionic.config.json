@@ -1,0 +1,7 @@
+{
+  "name": "m12-front",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue"
+}
