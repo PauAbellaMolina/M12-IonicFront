@@ -12,8 +12,8 @@
         </ion-toolbar>
       </ion-header>
 
-      <g-map :zoom="15" v-if="loc" :center="{ lat: loc?.coords.latitude, lng: loc?.coords.longitude }"></g-map>
-      <g-map :zoom="7" v-if="!loc" :center="{ lat: 41.15612, lng: 1.10687 }"></g-map>
+      <g-map :zoom="15" v-if="loc" :markers="markers" :center="{ lat: loc?.coords.latitude, lng: loc?.coords.longitude }"></g-map>
+      <g-map :zoom="7" v-if="!loc" :markers="markers" :center="{ lat: 41.15612, lng: 1.10687 }"></g-map>
       <!-- <ExploreContainer name="Tab 1 page" /> -->
     </ion-content>
   </ion-page>
@@ -30,6 +30,19 @@ export default defineComponent ({
   components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, GMap},
   data() {
     return{ loc: null as any }
+  },
+  setup() {
+    //Type 1 = coffee
+    //Type 2 = cupcake
+    const markers = [
+      { lat: 41.150191, lng: 1.100817, title: "Test1", type: 1 },
+      { lat: 41.153269, lng: 1.104915, title: "Test2", type: 2 },
+      { lat: 41.149334, lng: 1.109682, title: "Test3", type: 1 }
+    ]
+
+    return { 
+      markers
+    }
   },
   methods: {
     async getCurrentPosition(){
