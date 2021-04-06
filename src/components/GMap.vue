@@ -1,19 +1,30 @@
 <template>
-    <div class="map" ref="mapDivRef">
+    <div class="wrapper">
+        <div class="map" ref="mapDivRef">
+        </div>
+        <!-- If the reactive showCommercePopup variable is true, show the popup and pass the reactive commerceId variable to it as props -->
+        <CommerceMapPopup v-if="data.showCommercePopup" :commerceId="data.commerceId"/>
     </div>
 </template>
 
 <script>
-import { ref, onBeforeMount } from 'vue';
+import { ref, onBeforeMount, reactive } from 'vue';
+import CommerceMapPopup from "../components/CommerceMapPopup.vue";
 
 export default {
     name: "GMap",
+    components: { CommerceMapPopup },
     props: {
         center: { lat: Number, lng: Number },
         zoom: Number,
         markers: Array
     },
     setup(props) {
+        //Create
+        const data = reactive({
+            showCommercePopup: false,
+            commerceId: 0
+        });
         const map = ref(null);
         const mapDivRef = ref(null);
 
@@ -36,13 +47,16 @@ export default {
         const loadMapMarkers = () => {
             if (!props.markers.length) return;
 
+            //Importing the different types of markers
             const coffeeMarker = "/assets/markers/coffee_marker.svg";
             const cupcakeMarker = "/assets/markers/cupcake_marker.svg";
 
-            props.markers.forEach(markerInfo => {
+            //Foreach marker in the markers array received by props from Tab1
+            props.markers.forEach(marker => {
                 let icon = null;
                 
-                switch (markerInfo.type) {
+                //Depending on the marker type, set one marker or another
+                switch (marker.type) {
                     case 1:
                         icon = coffeeMarker;
                         break;
@@ -53,14 +67,15 @@ export default {
                         break;
                 }
 
+                //New marker
                 new window.google.maps.Marker({
-                    position: new window.google.maps.LatLng(markerInfo.lat, markerInfo.lng),
+                    position: new window.google.maps.LatLng(marker.lat, marker.lng),
                     map: map.value,
-                    title: markerInfo.title,
+                    title: marker.title,
                     icon: icon
-                }).addListener("click", () => {
-                    //Create/Invoke a comerce popup component pbbly passing the comerce id
-                    console.log("here");
+                }).addListener("click", () => { //Marker click listener
+                    data.commerceId = marker.commerceId; //Set the commerce id to a reactive data so that the component rerenders with the new commerce id passed
+                    data.showCommercePopup = true; //Show the popup
                 });
             });
         }
@@ -70,23 +85,31 @@ export default {
                 mapId: "fff522f093b3acd0",
                 zoom: props.zoom || 8,
                 disableDefaultUI: true,
-                center: props.center || { lat: 38.0, lng: -77.01 }
+                center: props.center || { lat: 41.15612, lng: 1.10687 }
             });
 
             loadMapMarkers();
         };
 
         return {
-            mapDivRef
+            mapDivRef,
+            data
         }
     }
 }
 </script>
 
 <style scoped>
+.wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
 .map {
     width: 100%;
     height: 100%;
-    background-color: azure;
+    background-color: #1F1F1F;
+    position: relative;
 }
 </style>
