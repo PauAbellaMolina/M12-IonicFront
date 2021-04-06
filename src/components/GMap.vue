@@ -11,6 +11,7 @@ export default {
     props: {
         center: { lat: Number, lng: Number },
         zoom: Number,
+        markers: Array
     },
     setup(props) {
         const map = ref(null);
@@ -18,9 +19,9 @@ export default {
 
         onBeforeMount(() => {
             // const key = process.env.VUE_APP_GOOGLEMAPS_KEY;
-            
+            const key = 'AIzaSyCWkXP_eBF1sPXKybaQ2ptmhb-fC_xJGig';
             const darkMapId = 'fff522f093b3acd0'; //dark map
-            const lightMapId = 'a2fc72d1ec9d4d81'; //light map
+            // const lightMapId = 'a2fc72d1ec9d4d81'; //light map
 
             const googleMapScript = document.createElement("SCRIPT");
             googleMapScript.setAttribute(
@@ -32,6 +33,38 @@ export default {
             document.head.appendChild(googleMapScript);
         });
 
+        const loadMapMarkers = () => {
+            if (!props.markers.length) return;
+
+            const coffeeMarker = "/assets/markers/coffee_marker.svg";
+            const cupcakeMarker = "/assets/markers/cupcake_marker.svg";
+
+            props.markers.forEach(markerInfo => {
+                let icon = null;
+                
+                switch (markerInfo.type) {
+                    case 1:
+                        icon = coffeeMarker;
+                        break;
+                    case 2:
+                        icon = cupcakeMarker;
+                        break;
+                    default:
+                        break;
+                }
+
+                new window.google.maps.Marker({
+                    position: new window.google.maps.LatLng(markerInfo.lat, markerInfo.lng),
+                    map: map.value,
+                    title: markerInfo.title,
+                    icon: icon
+                }).addListener("click", () => {
+                    //Create/Invoke a comerce popup component pbbly passing the comerce id
+                    console.log("here");
+                });
+            });
+        }
+
         window.initMap = () => {
             map.value = new window.google.maps.Map(mapDivRef.value, {
                 mapId: "fff522f093b3acd0",
@@ -39,6 +72,8 @@ export default {
                 disableDefaultUI: true,
                 center: props.center || { lat: 38.0, lng: -77.01 }
             });
+
+            loadMapMarkers();
         };
 
         return {
