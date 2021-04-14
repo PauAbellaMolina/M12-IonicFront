@@ -34,7 +34,7 @@ export default {
   watch: {
     commerceId: function(): void {
         //TEMPORARY DEV Switch case to test the watch function. HERE GOES THE CALL TO THE ENDPOINT
-        switch (this.commerceId) {
+        switch (this.commerceId as any) {
             case 1:
                 data.title = "Title1";
                 data.direction = "direction 1 test";
@@ -55,7 +55,7 @@ export default {
         }
     }
   },
-  setup(props) {
+  setup(props: any) {
     //Before mounting the component, fetch the api for the new commerce info (Not done yet)
     onBeforeMount(() => {
         //TEMPORARY DEV Switch case to test the watch function. HERE GOES THE CALL TO THE ENDPOINT

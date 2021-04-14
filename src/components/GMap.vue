@@ -29,8 +29,7 @@ export default {
         const mapDivRef = ref(null);
 
         onBeforeMount(() => {
-            // const key = process.env.VUE_APP_GOOGLEMAPS_KEY;
-            const key = 'AIzaSyCWkXP_eBF1sPXKybaQ2ptmhb-fC_xJGig';
+            const key = process.env.VUE_APP_GOOGLEMAPS_KEY;
             const darkMapId = 'fff522f093b3acd0'; //dark map
             // const lightMapId = 'a2fc72d1ec9d4d81'; //light map
 
