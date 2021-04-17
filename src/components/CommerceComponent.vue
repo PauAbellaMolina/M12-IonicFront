@@ -1,18 +1,30 @@
 <template>
   <div class="background positioning">
   </div>
-  <ion-grid class="positioning">
-      <!-- <ion-row class="h-100 p-5 ion-justify-content-center" @click="() => router.push('tab2')"> -->
-      <ion-row class="h-100 p-5 ion-justify-content-center">
-        <ion-col size="5">
+  <ion-grid class="positioning content">
+    <ion-row class="p-5 ion-justify-content-center">
+        <ion-col size="12">
             <div class="commerceImg"></div>
         </ion-col>
-        <ion-col size="7">
-            <h6>{{ data.title }}</h6>
+    </ion-row>
+    <ion-row class="p-5 pt-0 p-content ion-justify-content-center">
+        <ion-col size="12">
             <span>{{ data.direction }}</span>
-            <p>{{ data.description }}</p>
+            <h2>{{ data.title }}</h2>
         </ion-col>
-      </ion-row>
+        <ion-col size="12">
+            <p class="sectionLabel">Descripció:</p>
+            <p class="sectionDescription">{{ data.description }}</p>
+        </ion-col>
+        <ion-col size="6">
+            <p class="sectionLabel">Horari:</p>
+            <p class="sectionDescription">{{ data.horari }}</p>
+        </ion-col>
+        <ion-col size="6">
+            <p class="sectionLabel">Contacte:</p>
+            <p class="sectionDescription">{{ data.contacte }}</p>
+        </ion-col>
+    </ion-row>
   </ion-grid>
 </template>
 
@@ -24,11 +36,13 @@ import { useRouter } from 'vue-router';
 const data = reactive({
     title: "",
     direction: "",
-    description: ""
+    description: "",
+    horari: "",
+    contacte: ""
 });
 
 export default {
-  name: 'CommerceMapPopup',
+  name: 'CommerceComponent',
   props: {
     commerceId: Number //Commerce id received from GMap
   },
@@ -40,7 +54,9 @@ export default {
             case 1:
                 data.title = "Absis";
                 data.direction = "Plaça del Castell 20, Reus";
-                data.description = "description 1 test lorem ipsum lorem ipsum lorem ipsum";
+                data.description = "description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem ipsum lorem ipsum lorem ipsum";
+                data.horari = "description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem";
+                data.contacte = "description 1 test lorem ipsum lorem ipsum";
                 break;
             case 2:
                 data.title = "Title2";
@@ -65,7 +81,9 @@ export default {
             case 1:
                 data.title = "Absis";
                 data.direction = "Plaça del Castell 20, Reus";
-                data.description = "description 1 test lorem ipsum lorem ipsum lorem ipsum";
+                data.description = "description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem ipsum lorem ipsum lorem ipsum";
+                data.horari = "description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem";
+                data.contacte = "description 1 test lorem ipsum lorem ipsum";
                 break;
             case 2:
                 data.title = "Title2";
@@ -99,49 +117,66 @@ export default {
 .p-5 {
     padding: .4em;
 }
+.pt-0 {
+    padding-top: 0;
+}
+.pb-0 {
+    padding-bottom: 0;
+}
+.p-content {
+    padding: 0 1.1em 0 1.1em;
+}
 
 .background {
     background-color: #C4C4C4;
-    opacity: 0.7;
+    opacity: 1;
+}
+
+.content {
+    overflow-y: auto;
+    color: black;
 }
 
 .positioning {
     position: absolute;
-    width: 95%;
+    width: 100%;
     max-width: 500px;
-    height: 150px;
-    bottom: 11px;
+    height: 70vh;
+    bottom: 0;
     left: 50%;
     transform: translate(-50%, 0);
-    border-radius: 20px;
+    border-radius: 20px 20px 0 0;
 }
 
 .commerceImg {
     width: 100%;
-    max-width: 120px;
-    height: 100%;
-    max-height: 117px;
+    height: 200px;
     background-color: white;
     border-radius: 17px;
 }
 
-h6{
-    color: black;
-    margin: 13px 0 0 0;
+h2{
+    margin: 3px 0 0 0;
     font-family: 'Rubik Mono One', sans-serif;
 }
 
 span {
-    font-size: 12px;
+    font-size: 15px;
     color: rgb(63, 63, 63);
-    font-weight: 500;
-    margin: 0 0 0 8px;
+    font-weight: 900;
 }
 
-p {
+.sectionLabel {
+    font-size: 12px;
+    font-family: 'Rubik Mono One', sans-serif;
+    margin: 12px 0 2px 0;
+}
+
+.sectionDescription {
     font-size: 14px;
-    margin: 3px 0 0 0;
+    margin: 0 0 0 13px;
     font-weight: 600;
     color: rgb(29, 29, 29);
+    width: 70%;
 }
 </style>
