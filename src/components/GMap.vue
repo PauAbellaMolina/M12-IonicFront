@@ -1,19 +1,30 @@
 <template>
     <div class="wrapper">
-        <div class="map" ref="mapDivRef">
+        <div class="map" ref="mapDivRef" @click="() => data.showCommerceComponent ? data.showCommerceComponent = false : null">
         </div>
         <!-- If the reactive showCommercePopup variable is true, show the popup and pass the reactive commerceId variable to it as props -->
-        <CommerceMapPopup v-if="data.showCommercePopup" :commerceId="data.commerceId"/>
+        <transition name="slide">
+            <div v-if="data.showCommercePopup" @click="() => data.showCommerceComponent = true">
+                <CommerceMapPopup :commerceId="data.commerceId"/>
+            </div>
+        </transition>
+        <transition name="slide">
+            <div v-if="data.showCommerceComponent">
+                <CommerceComponent :commerceId="data.commerceId"/>
+            </div>
+        </transition>
     </div>
 </template>
 
 <script>
 import { ref, onBeforeMount, reactive } from 'vue';
 import CommerceMapPopup from "../components/CommerceMapPopup.vue";
+import CommerceComponent from "../components/CommerceComponent.vue";
+import { useBackButton } from '@ionic/vue';
 
 export default {
     name: "GMap",
-    components: { CommerceMapPopup },
+    components: { CommerceMapPopup, CommerceComponent },
     props: {
         center: { lat: Number, lng: Number },
         zoom: Number,
@@ -23,7 +34,8 @@ export default {
         //Create
         const data = reactive({
             showCommercePopup: false,
-            commerceId: 0
+            showCommerceComponent: false,
+            commerceId: 0,
         });
         const map = ref(null);
         const mapDivRef = ref(null);
@@ -73,8 +85,13 @@ export default {
                     title: marker.title,
                     icon: icon
                 }).addListener("click", () => { //Marker click listener
+                    if(data.commerceId == marker.commerceId) {
+                        data.showCommercePopup = !data.showCommercePopup; //If clicked the same marker as previous click, hide the popup
+                    } else {
+                        data.showCommercePopup = true; //If clicked another marker than the previous clicked or it hasnt clicked any, show the popup
+                    }
+
                     data.commerceId = marker.commerceId; //Set the commerce id to a reactive data so that the component rerenders with the new commerce id passed
-                    data.showCommercePopup = true; //Show the popup
                 });
             });
         }
@@ -90,6 +107,10 @@ export default {
             loadMapMarkers();
         };
 
+        useBackButton(10, () => {
+            data.showCommerceComponent ? data.showCommerceComponent = false : data.showCommercePopup ? data.showCommercePopup = false : history.back();
+        });
+
         return {
             mapDivRef,
             data
@@ -99,6 +120,19 @@ export default {
 </script>
 
 <style scoped>
+.slide-enter-active {
+  transition: all 0.1s;
+}
+
+.slide-leave-active {
+  transition: all 0.1s;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(170vw);
+}
+
 .wrapper {
     position: relative;
     width: 100%;

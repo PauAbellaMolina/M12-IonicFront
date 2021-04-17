@@ -16,3 +16,6 @@ export default defineComponent({
   }
 });
 </script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
+</style> 
