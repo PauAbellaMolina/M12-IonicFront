@@ -2,13 +2,13 @@
   <ion-page>
     <ion-header>
       <ion-toolbar>
-        <ion-title>Tab 1</ion-title>
+        <ion-title>Reus</ion-title>
       </ion-toolbar>
     </ion-header>
     <ion-content :fullscreen="true">
       <ion-header collapse="condense">
         <ion-toolbar>
-          <ion-title size="large">Tab 1</ion-title>
+          <ion-title size="large">Reus</ion-title>
         </ion-toolbar>
       </ion-header>
 
@@ -59,6 +59,10 @@ export default defineComponent ({
 })
 </script>
 <style>
+ion-title {
+  font-family: 'Rubik Mono One', sans-serif;
+}
+
 /* Removal of the google logo and bottom credit labels just for aesthetics and presentation purposes. THIS WILL NOT BE HIDDEN IF DEPLOYED TO PRODUCTION */
 .gmnoprint a, .gmnoprint span {
     display:none;
