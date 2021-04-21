@@ -24,6 +24,10 @@
             <p class="sectionLabel">Contacte:</p>
             <p class="sectionDescription">{{ data.contacte }}</p>
         </ion-col>
+        <ion-col size="12">
+            <p class="sectionLabel sectionLabelBig">Punts del comerç</p>
+            <div class="pointsSquare"></div>
+        </ion-col>
     </ion-row>
   </ion-grid>
 </template>
@@ -172,11 +176,24 @@ span {
     margin: 12px 0 2px 0;
 }
 
+.sectionLabelBig {
+    font-size: 15px;
+}
+
 .sectionDescription {
     font-size: 14px;
     margin: 0 0 0 13px;
     font-weight: 600;
     color: rgb(29, 29, 29);
     width: 70%;
+}
+
+.pointsSquare {
+    width: 100px;
+    max-width: 120px;
+    height: 100px;
+    max-height: 117px;
+    background-color: white;
+    border-radius: 17px;
 }
 </style>

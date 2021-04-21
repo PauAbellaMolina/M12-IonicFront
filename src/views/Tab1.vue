@@ -31,11 +31,14 @@ export default defineComponent ({
   data() {
     return{ loc: null as any }
   },
-  setup() {
+  async setup() {
     //Type 1 = coffee
     //Type 2 = cupcake
     
     //THIS IS WIP. We will have to fetch and construct the array of markers calling the api
+    // const test = process.env.API_URL;
+    // const markers = await (await fetch(process.env.API_URL+"/commerces")).json();
+    console.log(process.env.APP_URL);
     const markers = [
       { lat: 41.150191, lng: 1.100817, title: "Test1", type: 1, commerceId: 1 },
       { lat: 41.153269, lng: 1.104915, title: "Test2", type: 2, commerceId: 2 },
@@ -54,7 +57,7 @@ export default defineComponent ({
     }
   },
   mounted () {
-    this.getCurrentPosition()
+    this.getCurrentPosition();
   }
 })
 </script>
