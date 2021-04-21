@@ -9,107 +9,35 @@
     </ion-row>
     <ion-row class="p-5 pt-0 p-content ion-justify-content-center">
         <ion-col size="12">
-            <span>{{ data.direction }}</span>
-            <h2>{{ data.title }}</h2>
+            <span>{{ commerce.address }}</span>
+            <h2>{{ commerce.name }}</h2>
         </ion-col>
         <ion-col size="12">
             <p class="sectionLabel">Descripció:</p>
-            <p class="sectionDescription">{{ data.description }}</p>
+            <p class="sectionDescription">{{ commerce.description }}</p>
         </ion-col>
         <ion-col size="6">
             <p class="sectionLabel">Horari:</p>
-            <p class="sectionDescription">{{ data.horari }}</p>
+            <p class="sectionDescription">{{ commerce.schedule }}</p>
         </ion-col>
         <ion-col size="6">
             <p class="sectionLabel">Contacte:</p>
-            <p class="sectionDescription">{{ data.contacte }}</p>
+            <p class="sectionDescription">{{ commerce.phone }}</p>
+            <p class="sectionDescription">{{ commerce.email }}</p>
         </ion-col>
         <ion-col size="12">
             <p class="sectionLabel sectionLabelBig">Punts del comerç</p>
-            <div class="pointsSquare"></div>
+            <div class="pointsSquare">{{ commerce.total_points }}</div>
         </ion-col>
     </ion-row>
   </ion-grid>
 </template>
 
 <script lang="ts">
-import { onBeforeMount, reactive } from 'vue';
-import { useRouter } from 'vue-router';
-
-//We create a data reactive object containing a title string
-const data = reactive({
-    title: "",
-    direction: "",
-    description: "",
-    horari: "",
-    contacte: ""
-});
-
 export default {
   name: 'CommerceComponent',
   props: {
-    commerceId: Number //Commerce id received from GMap
-  },
-  //Watch the commerceId prop for changes and fetch the api for the new commerce info (Not done yet)
-  watch: {
-    commerceId: function(): void {
-        //TEMPORARY DEV Switch case to test the watch function. HERE GOES THE CALL TO THE ENDPOINT
-        switch (this.commerceId as any) {
-            case 1:
-                data.title = "Absis";
-                data.direction = "Plaça del Castell 20, Reus";
-                data.description = "description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem ipsum lorem ipsum lorem ipsum";
-                data.horari = "description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem";
-                data.contacte = "description 1 test lorem ipsum lorem ipsum";
-                break;
-            case 2:
-                data.title = "Title2";
-                data.direction = "direction 2 test";
-                data.description = "description 2 test lorem ipsum lorem ipsum lorem ipsum lorem ipsum";
-                break;
-            case 3:
-                data.title = "Title3";
-                data.direction = "direction 3 test";
-                data.description = "description 3 test lorem ipsum lorem ipsum lorem ipsum lorem ipsum";
-                break;
-            default:
-                break;
-        }
-    }
-  },
-  setup(props: any) {
-    //Before mounting the component, fetch the api for the new commerce info (Not done yet)
-    onBeforeMount(() => {
-        //TEMPORARY DEV Switch case to test the watch function. HERE GOES THE CALL TO THE ENDPOINT
-        switch (props.commerceId) {
-            case 1:
-                data.title = "Absis";
-                data.direction = "Plaça del Castell 20, Reus";
-                data.description = "description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem ipsum lorem ipsum lorem ipsum";
-                data.horari = "description 1 test lorem ipsum lorem ipsum lorem ipsum description 1 test lorem";
-                data.contacte = "description 1 test lorem ipsum lorem ipsum";
-                break;
-            case 2:
-                data.title = "Title2";
-                data.direction = "direction 2 test";
-                data.description = "description 2 test lorem ipsum lorem ipsum lorem ipsum lorem ipsum";
-                break;
-            case 3:
-                data.title = "Title3";
-                data.direction = "direction 3 test";
-                data.description = "description 3 test lorem ipsum lorem ipsum lorem ipsum lorem ipsum";
-                break;
-            default:
-                break;
-        }
-    })
-
-    const router = useRouter();
-
-    return {
-        data,
-        router
-    }
+    commerce: Object //Commerce id received from GMap
   },
 }
 </script>

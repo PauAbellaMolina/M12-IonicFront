@@ -12,51 +12,52 @@
         </ion-toolbar>
       </ion-header>
 
-      <g-map :zoom="15" v-if="loc" :markers="markers" :center="{ lat: loc?.coords.latitude, lng: loc?.coords.longitude }"></g-map>
-      <g-map :zoom="7" v-if="!loc" :markers="markers" :center="{ lat: 41.15612, lng: 1.10687 }"></g-map>
+      <g-map :zoom="15" v-if="loc && markers" :markers="markers" :center="{ lat: loc?.coords.latitude, lng: loc?.coords.longitude }"></g-map>
+      <g-map :zoom="7" v-if="!loc || !markers" :markers="markers" :center="{ lat: 41.15612, lng: 1.10687 }"></g-map>
       <!-- <ExploreContainer name="Tab 1 page" /> -->
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import GMap from "../components/GMap.vue";
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue'
+import GMap from "../components/GMap.vue"
 import { Plugins } from '@capacitor/core'
 import { defineComponent } from 'vue'
+import { ENV } from '../enviroments/enviroment'
 
 export default defineComponent ({
   name: 'Tab1',
   components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, GMap },
   data() {
-    return{ loc: null as any }
-  },
-  async setup() {
-    //Type 1 = coffee
-    //Type 2 = cupcake
-    
-    //THIS IS WIP. We will have to fetch and construct the array of markers calling the api
-    // const test = process.env.API_URL;
-    // const markers = await (await fetch(process.env.API_URL+"/commerces")).json();
-    console.log(process.env.APP_URL);
-    const markers = [
-      { lat: 41.150191, lng: 1.100817, title: "Test1", type: 1, commerceId: 1 },
-      { lat: 41.153269, lng: 1.104915, title: "Test2", type: 2, commerceId: 2 },
-      { lat: 41.149334, lng: 1.109682, title: "Test3", type: 1, commerceId: 3 }
-    ]
-
-    return { 
-      markers
+    return{ 
+      loc: null as any,
+      markers: null as any
     }
   },
   methods: {
-    async getCurrentPosition(){
+    //Get the current position from the users location and put the result on the loc reactive data
+    async getCurrentPosition() {
       const { Geolocation } = Plugins;
       const loc = await Geolocation.getCurrentPosition()
       setTimeout(() => this.loc = loc, 1000);
+    },
+    //Get the commerces from the api and put the response on the markers reactive data
+    fetchCommerces() {
+      fetch(ENV.API_URL+"/commerces")
+        .then(async response => {
+          const data = await response.json();
+          this.markers = data['res'];
+        })
+        .catch(error => {
+          console.error("There was an error!", error);
+      });
     }
   },
-  mounted () {
+  //When the component is mounted
+  mounted() {
+    //Call both methods explained above
+    this.fetchCommerces();
     this.getCurrentPosition();
   }
 })
