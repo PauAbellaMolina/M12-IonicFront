@@ -3,7 +3,7 @@
         <ion-grid>
           <ion-row>
             <ion-col>
-              <img :src="data.icon" />
+              <img style="max-width:70%;" :src="data.icon" />
             </ion-col>
           </ion-row>
           <ion-row>
@@ -41,14 +41,20 @@ export default {
     width: 100%;
     height: 35vh;
     background-color: white;
-    border-radius: 20px;
+    border-radius: 15px;
 }
 
 .title {
     font-family: 'Rubik Mono One', sans-serif;
     color: black;
-    font-size: 24px;
+    font-size: 5vw;
     margin-top: .5em;
+}
+
+@media only screen and (min-width: 500px) {
+  .title {
+    font-size: 25px;
+  }
 }
 
 ion-col {

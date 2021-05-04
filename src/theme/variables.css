@@ -234,3 +234,12 @@ http://ionicframework.com/docs/theming/ */
     --ion-card-background: #1e1e1e;
   }
 /* } */
+
+.background-yellow{
+  background-color:#FCF803 !important;
+}
+
+.border-yellow{
+  border:3px solid #FCF803 !important;
+  box-shadow: 0 0 5px 2px #FCF803;
+}
