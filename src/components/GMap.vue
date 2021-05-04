@@ -17,11 +17,12 @@
 </template>
 
 <script>
+import { ENV } from '../enviroments/enviroment'
 import { ref, onBeforeMount, reactive } from 'vue';
+import { useBackButton } from '@ionic/vue';
 import CommerceMapPopup from "../components/CommerceMapPopup.vue";
 import CommerceComponent from "../components/CommerceComponent.vue";
-import { useBackButton } from '@ionic/vue';
-import { ENV } from '../enviroments/enviroment'
+import Helpers from '@/helpers/helpers';
 
 export default {
     name: "GMap",
@@ -32,7 +33,6 @@ export default {
         markers: Array
     },
     setup(props) {
-        // console.log(props.markers[0]);
         //Create
         const data = reactive({
             showCommercePopup: false,
@@ -61,25 +61,9 @@ export default {
         const loadMapMarkers = () => {
             if (!props.markers.length) return;
 
-            //Importing the different types of markers
-            const coffeeMarker = "/assets/markers/coffee_marker.svg";
-            const cupcakeMarker = "/assets/markers/cupcake_marker.svg";
-
             //Foreach marker in the markers array received by props from Tab1
             props.markers.forEach(marker => {
-                let icon = null;
-                
-                //Depending on the marker type, set one marker or another
-                switch (marker.commerce_category) {
-                    case 1:
-                        icon = coffeeMarker;
-                        break;
-                    case 2:
-                        icon = cupcakeMarker;
-                        break;
-                    default:
-                        break;
-                }
+                const icon = Helpers.getMarker(marker.commerce_category);
 
                 //New marker
                 new window.google.maps.Marker({

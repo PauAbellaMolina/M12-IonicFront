@@ -49,8 +49,7 @@
 
 <script lang="ts">
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import { reactive } from 'vue';
-// import ExploreContainer from '@/components/ExploreContainer.vue';
+import { reactive, defineComponent } from 'vue';
 
 const data = reactive({
     nombre: "Abel Pedrola",
@@ -58,7 +57,7 @@ const data = reactive({
     nivel: 0
 });
 
-export default  {
+export default defineComponent ({
   name: 'Tab3',
   components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage },
   setup(){
@@ -66,7 +65,7 @@ export default  {
       data
     }
   }
-}
+})
 
 </script>
 

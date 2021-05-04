@@ -20,11 +20,11 @@
 </template>
 
 <script lang="ts">
+import { ENV } from '@/enviroments/enviroment'
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue'
-import GMap from "../components/GMap.vue"
 import { Plugins } from '@capacitor/core'
 import { defineComponent } from 'vue'
-import { ENV } from '../enviroments/enviroment'
+import GMap from "@/components/GMap.vue"
 
 export default defineComponent ({
   name: 'Tab1',
@@ -63,10 +63,6 @@ export default defineComponent ({
 })
 </script>
 <style>
-ion-title {
-  font-family: 'Rubik Mono One', sans-serif;
-}
-
 /* Removal of the google logo and bottom credit labels just for aesthetics and presentation purposes. THIS WILL NOT BE HIDDEN IF DEPLOYED TO PRODUCTION */
 .gmnoprint a, .gmnoprint span {
     display:none;

@@ -18,4 +18,10 @@ export default defineComponent({
 </script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap');
+
+  ion-title {
+    max-width: 500px;
+    margin: auto;
+    font-family: 'Rubik Mono One', sans-serif;
+  }
 </style> 
