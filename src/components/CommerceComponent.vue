@@ -27,19 +27,37 @@
         </ion-col>
         <ion-col size="12">
             <p class="sectionLabel sectionLabelBig">Punts del comerç</p>
-            <div class="pointsSquare">{{ commerce.total_points }}</div>
+            <div class="pointsSquare">{{ points }} punts</div>
         </ion-col>
     </ion-row>
   </ion-grid>
 </template>
 
 <script lang="ts">
-export default {
+import { ENV } from "@/enviroments/enviroment";
+import { defineComponent } from "vue"
+
+export default defineComponent ({
   name: 'CommerceComponent',
   props: {
     commerce: Object //Commerce id received from GMap
   },
-}
+  data() {
+      return {
+          points: 0,
+      }
+  },
+  beforeMount() {
+      fetch(ENV.API_URL+"/points/"+ENV.userId+"/"+this.commerce?.id)
+        .then(async response => {
+          const data = await response.json();
+          this.points = data['res'].points;
+        })
+        .catch(error => {
+          console.error("There was an error!", error);
+      });
+  }
+});
 </script>
 
 <style scoped>
@@ -117,11 +135,16 @@ span {
 }
 
 .pointsSquare {
-    width: 100px;
-    max-width: 120px;
+    width: 210px;
+    /* max-width: 120px; */
     height: 100px;
     max-height: 117px;
     background-color: white;
     border-radius: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+    font-weight: 900;
 }
 </style>

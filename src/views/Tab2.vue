@@ -15,7 +15,8 @@
       <ion-grid class="parent">
         <ion-row>
           <ion-col size="12">
-            <ion-searchbar placeholder="Buscar comerç"></ion-searchbar>
+            <ion-searchbar v-if="showCategories" placeholder="Buscar comerç"></ion-searchbar>
+            <ion-icon style="width: 40px; height: 40px; margin-left: 8px;" v-if="!showCategories" :icon="arrowBack" @click="goBack()" />
           </ion-col>
         </ion-row>
         <ion-row v-if="showCategories" class="categories">
@@ -39,10 +40,16 @@ import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSearchbar } fr
 import { defineComponent } from 'vue'
 import CategorySearchComponent from '@/components/CategorySearchComponent.vue';
 import CommerceResultSearchComponent from '@/components/CommerceResultSearchComponent.vue';
+import { arrowBack } from 'ionicons/icons';
 
 export default defineComponent ({
   name: 'Tab2',
   components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonSearchbar, CategorySearchComponent, CommerceResultSearchComponent },
+  setup() {
+    return {
+      arrowBack
+    }
+  },
   data() {
     return {
       categories: null as any,
@@ -73,6 +80,9 @@ export default defineComponent ({
         .catch(error => {
           console.error("There was an error!", error);
       });
+    },
+    goBack() {
+      this.showCategories = true;
     }
   }
 })
