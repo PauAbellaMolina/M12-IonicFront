@@ -98,4 +98,5 @@ ion-searchbar {
   justify-content: center;
   margin-bottom: 4em;
 }
+
 </style>
