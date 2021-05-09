@@ -5,7 +5,9 @@
       <!-- <ion-row class="h-100 p-5 ion-justify-content-center" @click="() => router.push('tab2')"> -->
       <ion-row class="h-100 p-5 ion-justify-content-center">
         <ion-col size="5">
-            <div class="commerceImg"></div>
+            <div class="commerceImgParent">
+                <img class="commerceImg" :src="'data:image/png;base64,'+commerce.picture" :alt="commerce.name" />
+            </div>
         </ion-col>
         <ion-col size="7">
             <h6>{{ commerce.name }}</h6>
@@ -49,7 +51,7 @@ export default {
     border-radius: 20px;
 }
 
-.commerceImg {
+.commerceImgParent {
     width: 100%;
     max-width: 120px;
     height: 100%;
@@ -57,12 +59,28 @@ export default {
     background-color: white;
     border-radius: 17px;
 }
+.commerceImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 17px;
+}
 
 h6{
     color: black;
     margin: 13px 0 0 0;
     font-family: 'Rubik Mono One', sans-serif;
+    white-space: nowrap;
+    width: 100%;
+    overflow: scroll;
+    /* text-overflow: ellipsis; */
 }
+
+/* @media only screen and (min-width: 500px) {
+  h6 {
+    font-size: 25px;
+  }
+} */
 
 span {
     font-size: 12px;

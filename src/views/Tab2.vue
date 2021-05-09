@@ -26,25 +26,31 @@
         </ion-row>
         <ion-row v-if="!showCategories" class="commerces">
           <ion-col v-for="commerce in commercesCategoryResult" :key="commerce.id" size="11">
-            <CommerceResultSearchComponent :commerce="commerce" />
+            <CommerceResultSearchComponent :commerce="commerce" @click="commerceResultClicked(commerce)" />
           </ion-col>
         </ion-row>
       </ion-grid>
+      <transition name="slide">
+        <div v-if="showCommerceComponent">
+            <CommerceComponent :commerce="commerceClicked" :searchPage="true"/>
+        </div>
+      </transition>
     </ion-content>
   </ion-page>
 </template>
 
 <script lang="ts">
 import { ENV } from '@/enviroments/enviroment'
-import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSearchbar } from '@ionic/vue';
+import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSearchbar, useBackButton } from '@ionic/vue';
 import { defineComponent } from 'vue'
 import CategorySearchComponent from '@/components/CategorySearchComponent.vue';
 import CommerceResultSearchComponent from '@/components/CommerceResultSearchComponent.vue';
+import CommerceComponent from "../components/CommerceComponent.vue";
 import { arrowBack } from 'ionicons/icons';
 
 export default defineComponent ({
   name: 'Tab2',
-  components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonSearchbar, CategorySearchComponent, CommerceResultSearchComponent },
+  components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage, IonSearchbar, CategorySearchComponent, CommerceResultSearchComponent, CommerceComponent },
   setup() {
     return {
       arrowBack
@@ -54,10 +60,16 @@ export default defineComponent ({
     return {
       categories: null as any,
       showCategories: true,
-      commercesCategoryResult: null as any
+      commercesCategoryResult: null as any,
+      showCommerceComponent: false,
+      commerceClicked: null as any,
     }
   },
   beforeMount() {
+    useBackButton(10, () => {
+      this.showCommerceComponent ? this.showCommerceComponent = false : !this.showCategories ? this.showCategories = true : history.back();
+    });
+
     fetch(ENV.API_URL+"/categories")
       .then(async response => {
         const data = await response.json();
@@ -81,16 +93,35 @@ export default defineComponent ({
           console.error("There was an error!", error);
       });
     },
+    commerceResultClicked(commerce: any) {
+      this.commerceClicked = commerce;
+      this.showCommerceComponent = true;
+    },
     goBack() {
       this.showCategories = true;
+      this.showCommerceComponent = false;
     }
   }
 })
 </script>
 
 <style scoped>
+.slide-enter-active {
+  transition: all .2s;
+}
+
+.slide-leave-active {
+  transition: all .2s;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(170vw);
+}
+
 .parent {
   max-width: 500px;
+  height: 100%;
 }
 
 ion-searchbar {
@@ -108,5 +139,4 @@ ion-searchbar {
   justify-content: center;
   margin-bottom: 4em;
 }
-
 </style>

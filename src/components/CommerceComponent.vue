@@ -1,10 +1,12 @@
 <template>
-  <div class="background positioning">
+  <div :style="(searchPage)?'margin-bottom: 57px;':''" class="background positioning">
   </div>
-  <ion-grid class="positioning content">
+  <ion-grid :style="(searchPage)?'margin-bottom: 57px;':''" class="positioning content">
     <ion-row class="p-5 ion-justify-content-center">
         <ion-col size="12">
-            <div class="commerceImg"></div>
+            <div class="commerceImgParent">
+                <img class="commerceImg" :src="'data:image/png;base64,'+commerce.picture" :alt="commerce.name" />
+            </div>
         </ion-col>
     </ion-row>
     <ion-row class="p-5 pt-0 p-content ion-justify-content-center">
@@ -40,7 +42,8 @@ import { defineComponent } from "vue"
 export default defineComponent ({
   name: 'CommerceComponent',
   props: {
-    commerce: Object //Commerce id received from GMap
+    commerce: Object, //Commerce id received from GMap
+    searchPage: Boolean
   },
   data() {
       return {
@@ -98,10 +101,16 @@ export default defineComponent ({
     border-radius: 20px 20px 0 0;
 }
 
-.commerceImg {
+.commerceImgParent {
     width: 100%;
     height: 200px;
     background-color: white;
+    border-radius: 17px;
+}
+.commerceImg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: 17px;
 }
 
