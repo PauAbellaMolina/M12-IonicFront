@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts">
-import { ENV } from '@/enviroments/enviroment'
+import { ENV } from '@/enviroments/enviroment';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent, IonSearchbar, useBackButton } from '@ionic/vue';
 import { defineComponent } from 'vue'
 import CategorySearchComponent from '@/components/CategorySearchComponent.vue';

@@ -72,8 +72,14 @@ h6{
     font-family: 'Rubik Mono One', sans-serif;
     white-space: nowrap;
     width: 100%;
-    overflow: scroll;
+    overflow: auto;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     /* text-overflow: ellipsis; */
+}
+h6::-webkit-scrollbar {
+    width: 0 !important;
 }
 
 /* @media only screen and (min-width: 500px) {

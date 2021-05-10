@@ -13,30 +13,31 @@
       </ion-header>
       
       <!-- <ExploreContainer name="Tab 3 page" /> -->
-      <ion-grid>
-        <ion-row>
-          <ion-col>
-            <div id="profilePic"><img src="https://media-exp1.licdn.com/dms/image/C4D03AQEVxFwk6E0NZA/profile-displayphoto-shrink_200_200/0/1598817201050?e=1624492800&v=beta&t=P04kATxDmGV7_9Mv_qKGtq4idFz3ONn2mFSdzs0btgM"></div>
+      <ion-grid class="parent">
+        <ion-row class="userCard">
+          <ion-col size="5">
+            <div class="profilePic"><img :src="'data:image/png;base64,'+user?.picture" :alt="user?.name"></div>
           </ion-col>
-          <ion-col>
-            <div id="userinfo">
-
-              <h1>{{ data.nombre }}</h1>
-              <p>{{ data.correo }}</p>
-              <p> Cambiar de cuenta ></p>
-              
+          <ion-col size="7">
+            <div class="userInfo">
+              <p class="userName">{{ user?.name }} {{ user?.surname }}</p>
+              <p class="userEmail">{{ user?.email }}</p>
+              <p class="userPhone">{{ user?.phone }}</p>
+              <!-- <p> Cambiar de cuenta ></p> -->
             </div>
           </ion-col>
         </ion-row>
         <ion-row>
           <ion-col>
-            <div id="nivel"><h2>Nivell {{ data.nivel }}</h2></div>
+            <div class="level"><h2>Nivell {{ level?.name }}</h2></div>
           </ion-col>
         </ion-row>
         
         <ion-row>
           <ion-col>
-            <div id="userQR"><img src="https://i.pinimg.com/originals/fc/b7/88/fcb788f04230791f5cf8de48fd53f1f3.png"></div>
+            <div class="userQR">
+              <img src="https://chart.googleapis.com/chart?cht=qr&choe=UTF-8&chs=500x500&chld=L|1&chl={{ ENV.userId }}">
+            </div>
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -48,81 +49,146 @@
 </template>
 
 <script lang="ts">
+import { ENV } from '@/enviroments/enviroment';
 import { IonPage, IonHeader, IonToolbar, IonTitle, IonContent } from '@ionic/vue';
-import { reactive, defineComponent } from 'vue';
-
-const data = reactive({
-    nombre: "Abel Pedrola",
-    correo: "abel@gmail.com",
-    nivel: 0
-});
+import { defineComponent } from 'vue';
 
 export default defineComponent ({
   name: 'Tab3',
   components: { IonHeader, IonToolbar, IonTitle, IonContent, IonPage },
-  setup(){
-    return{
-      data
+  data() {
+    return {
+      user: null as any,
+      level: null as any,
     }
-  }
+  },
+  beforeMount() {
+    //Fetch user info
+    fetch(ENV.API_URL+"/users/"+ENV.userId)
+      .then(async response => {
+        const data = await response.json();
+        this.user = data['res'];
+      })
+      .catch(error => {
+        console.error("There was an error!", error);
+    });
+
+    //Fetch level info
+    fetch(ENV.API_URL+"/levels/"+this.user?.points)
+      .then(async response => {
+        const data = await response.json();
+        this.level = data['res'];
+      })
+      .catch(error => {
+        console.error("There was an error!", error);
+    });
+  },
 })
 
 </script>
 
 <style scoped>
+.parent {
+  max-width: 500px;
+  height: 100%;
+}
 
-#profilePic {
+.profilePic {
   text-align: center;
 }
 
-#profilePic img {
+.profilePic img {
   width:120px;
   height:120px;
-  border-radius: 80px;
+  border-radius: 20px;
 }
 
-#userinfo {
-  margin-left:-12px;
+.userCard {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.3em;
 }
 
-#userinfo h1, #userinfo p {
-  margin:0;
-  margin-bottom: 5px;
+.userInfo p {
+  margin: 3px 0 0 0;
 }
+  .userInfo .userName {
+    margin: 0 0 5px 0;
+    font-size: 1.4em;
+    font-family: 'Rubik Mono One', sans-serif;
+    white-space: nowrap;
+    width: 90%;
+    overflow: auto;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .userInfo .userName::-webkit-scrollbar {
+    width: 0 !important;
+  }
+
+  .userInfo .userEmail {
+    overflow: auto;
+    white-space: nowrap;
+    width: 100%;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+  .userInfo .userEmail::-webkit-scrollbar {
+    width: 0 !important;
+  }
+
+  .userInfo .userPhone, .userEmail {
+    font-size: 16px;
+    font-weight: 600;
+    color: #adadad;
+  }
 
 h1{
   padding-top:20px;
   font-weight: bold;
 }
 
-#nivel {
+.level {
   width:90%;
   padding-top: 10px;
   padding-bottom: 10px;
   margin:auto;
-  margin-top: 40px;
+  margin-top: 1.1em;
   text-align: center;
-  background-color: #FCF803;
+  /* background-color: #FCF803; */
+  background-color: #464646;
+  /* opacity: 0.85; */
   border-radius: 10px;
 }
 
-#nivel h2{
+.level h2{
   padding:0;
   margin:0;
-  font-size:40px;
-  color:black;
-  font-weight: 900;
+  font-size: 10vw;
+  color: white;
+  font-family: 'Rubik Mono One', sans-serif;
+  /* font-weight: 900; */
 }
 
-#userQR {
+@media only screen and (min-width: 500px) {
+  .level h2 {
+    font-size: 3.1em;
+  }
+}
+
+.userQR {
   width:90%;
-  margin:auto;
-  margin-top: 15px;
+  margin: 1.3em auto 4.5em auto;
   text-align: center;
 }
 
-#userQR img {
-  width:70%
+.userQR img {
+  width:70%;
+  border-radius: 17px;
 }
 
 </style>

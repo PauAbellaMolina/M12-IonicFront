@@ -76,7 +76,13 @@ h6{
     font-size: 15px;
     white-space: nowrap;
     width: 100%;
-    overflow: scroll;
+    overflow: auto;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+h6::-webkit-scrollbar {
+    width: 0 !important;
 }
 
 span {

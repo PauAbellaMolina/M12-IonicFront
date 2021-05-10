@@ -31,6 +31,11 @@
             <p class="sectionLabel sectionLabelBig">Punts del comerç</p>
             <div class="pointsSquare">{{ points }} punts</div>
         </ion-col>
+        <ion-col size="12">
+            <p class="sectionLabel sectionLabelBig">Recompenses</p>
+            <!-- VFOR inserting a recompensa component -->
+            <div class="test">Test</div>
+        </ion-col>
     </ion-row>
   </ion-grid>
 </template>
@@ -144,9 +149,23 @@ span {
 }
 
 .pointsSquare {
-    width: 210px;
+    width: 6em;
     /* max-width: 120px; */
-    height: 100px;
+    height: 2.8em;
+    max-height: 117px;
+    background-color: white;
+    border-radius: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+    font-weight: 900;
+}
+
+.test {
+    width: 100%;
+    /* max-width: 120px; */
+    height: 2.8em;
     max-height: 117px;
     background-color: white;
     border-radius: 17px;
