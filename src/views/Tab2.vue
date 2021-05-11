@@ -20,11 +20,17 @@
           </ion-col>
         </ion-row>
         <ion-row v-if="showCategories" class="categories">
+          <div v-if="!categories" style="width: 100%; display: flex; justify-content: center; margin-top: 2em;">
+            <ion-icon style="font-size: 4em;" src="assets/loaders/puff_white.svg"></ion-icon>
+          </div>
           <ion-col v-for="category in categories" :key="category.id" size="6">
             <CategorySearchComponent :category="category" @click="categoryClicked(category.id)"/>
           </ion-col>
         </ion-row>
         <ion-row v-if="!showCategories" class="commerces">
+          <div v-if="!commercesCategoryResult" style="width: 100%; display: flex; justify-content: center; margin-top: 2em;">
+            <ion-icon style="font-size: 4em;" src="assets/loaders/puff_white.svg"></ion-icon>
+          </div>
           <ion-col v-for="commerce in commercesCategoryResult" :key="commerce.id" size="11">
             <CommerceResultSearchComponent :commerce="commerce" @click="commerceResultClicked(commerce)" />
           </ion-col>
@@ -82,6 +88,7 @@ export default defineComponent ({
   methods: {
     categoryClicked(categoryId: number) {
       this.showCategories = false;
+      this.commercesCategoryResult = null;
       
       fetch(ENV.API_URL+"/commerces/category/"+categoryId)
         .then(async response => {

@@ -29,12 +29,20 @@
         </ion-col>
         <ion-col size="12">
             <p class="sectionLabel sectionLabelBig">Punts del comerç</p>
-            <div class="pointsSquare">{{ points }} punts</div>
+            <div class="pointsSquare"><span v-if="points != null">{{ points }}</span><span v-else><ion-icon style="font-size: 1em; margin-right: .3em;" src="assets/loaders/puff.svg"></ion-icon></span>&nbsp;punts</div>
         </ion-col>
         <ion-col size="12">
-            <p class="sectionLabel sectionLabelBig">Recompenses</p>
+            <p class="sectionLabel sectionLabelBig" style="margin-bottom: .4em">Recompenses</p>
             <!-- VFOR inserting a recompensa component -->
-            <div class="test">Test</div>
+            <!-- <div class="test">Test</div> -->
+            <div v-if="!recompenses" style="display: flex; justify-content: center; margin-top: 2em;">
+                <ion-icon style="font-size: 3.5em;" src="assets/loaders/puff.svg"></ion-icon>
+            </div>
+            <div v-if="recompenses">
+                <div v-for="recompense in recompenses" :key="recompense.id" size="11">
+                    <CommerceComponentRecompense :recompense="recompense" />
+                </div>
+            </div>
         </ion-col>
     </ion-row>
   </ion-grid>
@@ -43,16 +51,19 @@
 <script lang="ts">
 import { ENV } from "@/enviroments/enviroment";
 import { defineComponent } from "vue"
+import CommerceComponentRecompense from "../components/CommerceComponentRecompense.vue";
 
 export default defineComponent ({
   name: 'CommerceComponent',
+  components: { CommerceComponentRecompense },
   props: {
     commerce: Object, //Commerce id received from GMap
     searchPage: Boolean
   },
   data() {
       return {
-          points: 0,
+          points: null,
+          recompenses: null as any
       }
   },
   beforeMount() {
@@ -60,6 +71,15 @@ export default defineComponent ({
         .then(async response => {
           const data = await response.json();
           this.points = data['res'].points;
+        })
+        .catch(error => {
+          console.error("There was an error!", error);
+      });
+
+      fetch(ENV.API_URL+"/recompenses/"+this.commerce?.id)
+        .then(async response => {
+          const data = await response.json();
+          this.recompenses = data['res'];
         })
         .catch(error => {
           console.error("There was an error!", error);
@@ -158,6 +178,10 @@ span {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 35px;
+    font-weight: 900;
+}
+.pointsSquare span {
     font-size: 35px;
     font-weight: 900;
 }

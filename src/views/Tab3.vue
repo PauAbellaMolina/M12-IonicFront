@@ -14,7 +14,10 @@
       
       <!-- <ExploreContainer name="Tab 3 page" /> -->
       <ion-grid class="parent">
-        <ion-row class="userCard">
+        <ion-row class="userCardLoading" v-if="!user">
+          <ion-icon style="font-size: 4em;" src="assets/loaders/puff_white.svg"></ion-icon>
+        </ion-row>
+        <ion-row class="userCard" v-if="user">
           <ion-col size="5">
             <div class="profilePic"><img :src="'data:image/png;base64,'+user?.picture" :alt="user?.name"></div>
           </ion-col>
@@ -36,7 +39,7 @@
         <ion-row>
           <ion-col>
             <div class="userQR">
-              <img src="https://chart.googleapis.com/chart?cht=qr&choe=UTF-8&chs=500x500&chld=L|1&chl={{ ENV.userId }}">
+              <img :src="'https://chart.googleapis.com/chart?cht=qr&choe=UTF-8&chs=500x500&chld=L|1&chl='+user?.id">
             </div>
           </ion-col>
         </ion-row>
@@ -109,6 +112,14 @@ export default defineComponent ({
   justify-content: center;
   align-items: center;
   margin-top: 1.3em;
+}
+.userCardLoading {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 1.3em;
+  height: 8em;
 }
 
 .userInfo p {
