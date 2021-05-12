@@ -33,8 +33,6 @@
         </ion-col>
         <ion-col size="12">
             <p class="sectionLabel sectionLabelBig" style="margin-bottom: .4em">Recompenses</p>
-            <!-- VFOR inserting a recompensa component -->
-            <!-- <div class="test">Test</div> -->
             <div v-if="!recompenses" style="display: flex; justify-content: center; margin-top: 2em;">
                 <ion-icon style="font-size: 3.5em;" src="assets/loaders/puff.svg"></ion-icon>
             </div>
@@ -76,7 +74,7 @@ export default defineComponent ({
           console.error("There was an error!", error);
       });
 
-      fetch(ENV.API_URL+"/recompenses/"+this.commerce?.id)
+      fetch(ENV.API_URL+"/recompenses/"+this.commerce?.id+"/"+ENV.userId)
         .then(async response => {
           const data = await response.json();
           this.recompenses = data['res'];
@@ -146,7 +144,7 @@ h2{
 
 span {
     font-size: 15px;
-    color: rgb(63, 63, 63);
+    /* color: rgb(63, 63, 63); */
     font-weight: 900;
 }
 
