@@ -38,7 +38,7 @@
             </div>
             <div v-if="recompenses">
                 <div v-for="recompense in recompenses" :key="recompense.id" size="11">
-                    <CommerceComponentRecompense :recompense="recompense" />
+                    <CommerceComponentRecompense :avaliablePoints="points" :recompense="recompense" />
                 </div>
             </div>
         </ion-col>

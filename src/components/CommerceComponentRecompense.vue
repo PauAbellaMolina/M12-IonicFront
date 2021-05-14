@@ -17,9 +17,10 @@
             </ion-row>
             <ion-row style="display: flex;" class="ion-justify-content-center">
                 <div class="pointsButtonInfo">
-                    <ion-button v-if="recompense.used == true && recompense.active == 1" class="useRecompense" style="--backgound: #464646;" disabled>Ja utilitzada</ion-button>
-                    <ion-button v-if="recompense.used == false && recompense.active == 1" @click="useRecompense()" class="useRecompense" style="--backgound: #464646;">{{ showHide }} QR</ion-button>
+                    <ion-button v-if="recompense.used == true && recompense.active == 1 && recompense.points <= avaliablePoints" class="useRecompense" style="--backgound: #464646;" disabled>Ja utilitzada</ion-button>
+                    <ion-button v-if="recompense.used == false && recompense.active == 1 && recompense.points <= avaliablePoints" @click="useRecompense()" class="useRecompense" style="--backgound: #464646;">{{ showHide }} QR</ion-button>
                     <ion-button v-if="recompense.active == 0" class="useRecompense" style="--backgound: #464646;" disabled>No disponible</ion-button>
+                    <ion-button v-if="recompense.points > avaliablePoints && recompense.active == 1" class="useRecompense" style="--backgound: #464646;" disabled>Punts insuficients</ion-button>
                     <transition name="slide">
                         <img style="z-index: -1;" v-if="showQr" :src="'https://chart.googleapis.com/chart?cht=qr&choe=UTF-8&chs=210x210&chld=L|1&chl='+userId+'/'+recompense.id">
                     </transition>
@@ -36,7 +37,8 @@ import { ENV } from "@/enviroments/enviroment";
 export default defineComponent({
   name: 'CommerceComponentRecompense',
   props: {
-    recompense: Object //Commerce id received from GMap
+    recompense: Object, //Commerce id received from GMap
+    avaliablePoints: Number
   },
   data() {
       return {
