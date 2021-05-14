@@ -9,6 +9,7 @@ import { IonApp, IonRouterOutlet } from '@ionic/vue';
 import { defineComponent } from 'vue';
 import { FCM } from '@capacitor-community/fcm';
 import { Plugins } from '@capacitor/core';
+import { ENV } from '@/enviroments/enviroment';
 
  const { PushNotifications } = Plugins;
 
@@ -43,16 +44,22 @@ export default defineComponent({
     //   PushNotifications.addListener(
     //     "pushNotificationActionPerformed",
     //     async (notification) => {
-    //         alert("notification " + notification)
+    //       alert("notification " + notification)
     //       console.log("notification succeeded");
     //     }
     //   ),
       
       PushNotifications.register();
       
-    const fcmToken = this.fcm.getToken();
-    alert(JSON.stringify(fcmToken));
-    console.log("token:" + JSON.stringify(fcmToken));
+    this.fcm.getToken().then(token => {
+      // alert(token.token);
+      
+      fetch(ENV.API_URL+"/fcmToken/"+ENV.userId+"/"+token.token, {method: 'POST'})
+      .catch(error => {
+        console.error("There was an error!", error);
+        alert("There was an error! " + error);
+    });
+    });
   },
 });
 </script>
