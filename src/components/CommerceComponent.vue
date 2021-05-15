@@ -32,7 +32,15 @@
         </ion-col>
         <!-- -----WIP----- -->
         <ion-col size="12">
-            <ion-button class="notifsAccessButton" v-if="isFavourite == true">Veure notificacions</ion-button>
+            <ion-button class="notifsAccessButton" v-if="isFavourite == true && !showNotifications" @click="() => { showNotifications = !showNotifications }">Veure notificacions</ion-button>
+            <ion-button class="notifsAccessButton" v-if="isFavourite == true && showNotifications" @click="() => { showNotifications = !showNotifications }">Amagar notificacions</ion-button>
+            <transition name="slide">
+                <div v-if="showNotifications" class="notificationsContainer">
+                    <div style="width: 90%;" v-for="notification in notifications" :key="notification.id">
+                        <CommerceNotificationComponent :notification="notification" />
+                    </div>
+                </div>
+            </transition>
         </ion-col>
         <!-- -----WIP----- -->
         <ion-col size="12">
@@ -57,22 +65,25 @@
 <script lang="ts">
 import { ENV } from "@/enviroments/enviroment";
 import { defineComponent } from "vue"
-import CommerceComponentRecompense from "../components/CommerceComponentRecompense.vue";
+import CommerceComponentRecompense from "./CommerceComponentRecompense.vue";
+import CommerceNotificationComponent from "./CommerceNotificationComponent.vue";
 
 export default defineComponent ({
   name: 'CommerceComponent',
-  components: { CommerceComponentRecompense },
+  components: { CommerceComponentRecompense, CommerceNotificationComponent },
   props: {
     commerce: Object, //Commerce id received from GMap
-    searchPage: Boolean
+    searchPage: Boolean,
   },
   data() {
       return {
           points: null,
           recompenses: null as any,
           isFavourite: -1 as any,
+          notifications: null as any,
           starEmpty: null as any,
           starSolid: null as any,
+          showNotifications: false
       }
   },
   beforeMount() {
@@ -105,6 +116,15 @@ export default defineComponent ({
         .catch(error => {
           console.error("There was an error!", error);
       });
+
+      fetch(ENV.API_URL+"/notifications/"+this.commerce?.id)
+        .then(async response => {
+          const data = await response.json();
+          this.notifications = data['res'];
+        })
+        .catch(error => {
+          console.error("There was an error!", error);
+      });
   },
   methods: {
       swapFavourite() {
@@ -125,6 +145,19 @@ export default defineComponent ({
 </script>
 
 <style scoped>
+.slide-enter-active {
+  transition: all .1s;
+}
+
+.slide-leave-active {
+  transition: all .1s;
+}
+
+.slide-enter-from,
+.slide-leave-to {
+  transform: translateY(-3.1em);
+}
+
 .h-100 {
     height: 100%;
 }
@@ -244,14 +277,15 @@ span {
     width: 100%;
     height: 3em;
     margin: .7em 0 0 0;
-    --background: white;
-    --color: black;
+    --background: #101215;
+    --color: white;
     --border-radius: 10px;
     /* display: flex;
     justify-content: center;
     align-items: center; */
     font-size: .88em;
     font-weight: 900;
+    z-index: 2;
 }
 .notifsButton {
     width: 3em;
@@ -273,17 +307,16 @@ span {
     font-weight: 900;
 }
 
-.test {
+.notificationsContainer {
+    background-color: #101215;
     width: 100%;
-    /* max-width: 120px; */
-    height: 2.8em;
-    max-height: 117px;
-    background-color: white;
-    border-radius: 17px;
+    height: 20em;
+    border-radius: 10px;
+    margin-top: .4em;
+    overflow-y: auto;
     display: flex;
-    justify-content: center;
+    flex-flow: column;
     align-items: center;
-    font-size: 35px;
-    font-weight: 900;
+    padding: 1.2em 0 1em 0;
 }
 </style>
