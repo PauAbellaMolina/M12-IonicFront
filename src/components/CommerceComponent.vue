@@ -5,6 +5,9 @@
     <ion-row class="p-5 ion-justify-content-center">
         <ion-col size="12">
             <div class="commerceImgParent">
+                <ion-button class="favStar" v-if="isFavourite == false" @click="swapFavourite()">Afegir <img style="max-width: 40%; margin-left: .35em" :src="starEmpty" /></ion-button>
+                <ion-button class="favStar" v-if="isFavourite == true" @click="swapFavourite()">Treure <img style="max-width: 40%; margin-left: .35em" :src="starSolid" /></ion-button>
+                <ion-button class="favStar" v-if="isFavourite == -1"><ion-icon style="font-size: 2em;" src="assets/loaders/puff_white.svg"></ion-icon></ion-button>
                 <img class="commerceImg" :src="'data:image/png;base64,'+commerce.picture" :alt="commerce.name" />
             </div>
         </ion-col>
@@ -27,6 +30,11 @@
             <p class="sectionDescription">{{ commerce.phone }}</p>
             <p class="sectionDescription">{{ commerce.email }}</p>
         </ion-col>
+        <!-- -----WIP----- -->
+        <ion-col size="12">
+            <ion-button class="notifsAccessButton" v-if="isFavourite == true">Veure notificacions</ion-button>
+        </ion-col>
+        <!-- -----WIP----- -->
         <ion-col size="12">
             <p class="sectionLabel sectionLabelBig">Punts del comerç</p>
             <div class="pointsSquare"><span v-if="points != null">{{ points }}</span><span v-else><ion-icon style="font-size: 1em; margin-right: .3em;" src="assets/loaders/puff.svg"></ion-icon></span>&nbsp;punts</div>
@@ -61,10 +69,25 @@ export default defineComponent ({
   data() {
       return {
           points: null,
-          recompenses: null as any
+          recompenses: null as any,
+          isFavourite: -1 as any,
+          starEmpty: null as any,
+          starSolid: null as any,
       }
   },
   beforeMount() {
+      this.starEmpty = "/assets/stars/star-regular.svg";
+      this.starSolid = "/assets/stars/star-solid.svg";
+
+      fetch(ENV.API_URL+"/isFavourite/"+this.commerce?.id+"/"+ENV.userId)
+        .then(async response => {
+          const data = await response.json();
+          this.isFavourite = data['res'];
+        })
+        .catch(error => {
+          console.error("There was an error!", error);
+      });
+
       fetch(ENV.API_URL+"/points/"+ENV.userId+"/"+this.commerce?.id)
         .then(async response => {
           const data = await response.json();
@@ -82,6 +105,21 @@ export default defineComponent ({
         .catch(error => {
           console.error("There was an error!", error);
       });
+  },
+  methods: {
+      swapFavourite() {
+          let action = "";
+          this.isFavourite ? action = "/removeFavourite/" : action = "/addFavourite/";
+
+        fetch(ENV.API_URL+action+this.commerce?.id+"/"+ENV.userId, {method: 'POST'})
+            .then(async response => {
+                const data = await response.json();
+                this.isFavourite = data['res'];
+            })
+            .catch(error => {
+            console.error("There was an error!", error);
+        });
+      }
   }
 });
 </script>
@@ -122,6 +160,23 @@ export default defineComponent ({
     left: 50%;
     transform: translate(-50%, 0);
     border-radius: 20px 20px 0 0;
+}
+
+.favStar {
+    position: absolute;
+    right: .7em;
+    bottom: .7em;
+    width: 7.2em;
+    height: 2.8em;
+    --border-radius: .9em;
+    /* font-weight: 900; */
+    /* font-size: 30px; */
+    --background: #101215;
+    --color: #d8d8d8;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .commerceImgParent {
@@ -178,8 +233,42 @@ span {
     align-items: center;
     font-size: 35px;
     font-weight: 900;
+    margin-right: .3em;
 }
 .pointsSquare span {
+    font-size: 35px;
+    font-weight: 900;
+}
+
+.notifsAccessButton {
+    width: 100%;
+    height: 3em;
+    margin: .7em 0 0 0;
+    --background: white;
+    --color: black;
+    --border-radius: 10px;
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+    font-size: .88em;
+    font-weight: 900;
+}
+.notifsButton {
+    width: 3em;
+    /* max-width: 120px; */
+    height: 2.8em;
+    max-height: 117px;
+    margin: 0;
+    --background: white;
+    --color: black;
+    --border-radius: 17px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 35px;
+    font-weight: 900;
+}
+.notifsButton span {
     font-size: 35px;
     font-weight: 900;
 }

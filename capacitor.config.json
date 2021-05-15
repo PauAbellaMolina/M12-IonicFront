@@ -1,6 +1,6 @@
 {
-  "appId": "io.ionic.starter",
-  "appName": "m12-front",
+  "appId": "io.animalocal.app",
+  "appName": "ÀnimaLocal",
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "dist",
@@ -9,5 +9,9 @@
       "launchShowDuration": 0
     }
   },
-  "cordova": {}
+  "cordova": {},
+  "server": {
+    "url": "http://192.168.0.17:8101",
+    "cleartext": true
+  }
 }
