@@ -10,7 +10,7 @@
         </transition>
         <transition name="slide">
             <div v-if="data.showCommerceComponent">
-                <CommerceComponent :commerce="data.commerce"/>
+                <CommerceComponent :commerce="data.commerce" :searchPage="false"/>
             </div>
         </transition>
     </div>
