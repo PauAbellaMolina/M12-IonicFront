@@ -71,16 +71,16 @@ export default defineComponent ({
       .then(async response => {
         const data = await response.json();
         this.user = data['res'];
-      })
-      .catch(error => {
-        console.error("There was an error!", error);
-    });
 
-    //Fetch level info
-    fetch(ENV.API_URL+"/levels/"+this.user?.points)
-      .then(async response => {
-        const data = await response.json();
-        this.level = data['res'];
+        //Fetch level info
+        fetch(ENV.API_URL+"/levels/"+this.user?.points)
+          .then(async response => {
+            const data = await response.json();
+            this.level = data['res'];
+          })
+          .catch(error => {
+            console.error("There was an error!", error);
+        });
       })
       .catch(error => {
         console.error("There was an error!", error);

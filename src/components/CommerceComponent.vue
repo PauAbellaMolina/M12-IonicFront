@@ -21,16 +21,15 @@
             <p class="sectionLabel">Descripció:</p>
             <p class="sectionDescription">{{ commerce.description }}</p>
         </ion-col>
-        <ion-col size="6">
+        <ion-col size="7">
             <p class="sectionLabel">Horari:</p>
-            <p class="sectionDescription">{{ commerce.schedule }}</p>
+            <p class="sectionDescription" v-html="commerce.schedule"></p>
         </ion-col>
-        <ion-col size="6">
+        <ion-col size="5">
             <p class="sectionLabel">Contacte:</p>
-            <p class="sectionDescription">{{ commerce.phone }}</p>
-            <p class="sectionDescription">{{ commerce.email }}</p>
+            <p class="sectionDescription contact">{{ commerce.phone }}</p>
+            <p class="sectionDescription contact">{{ commerce.email }}</p>
         </ion-col>
-        <!-- -----WIP----- -->
         <ion-col size="12">
             <ion-button class="notifsAccessButton" v-if="isFavourite == true && !showNotifications" @click="() => { showNotifications = !showNotifications }">Veure notificacions</ion-button>
             <ion-button class="notifsAccessButton" v-if="isFavourite == true && showNotifications" @click="() => { showNotifications = !showNotifications }">Amagar notificacions</ion-button>
@@ -42,7 +41,6 @@
                 </div>
             </transition>
         </ion-col>
-        <!-- -----WIP----- -->
         <ion-col size="12">
             <p class="sectionLabel sectionLabelBig">Punts del comerç</p>
             <div class="pointsSquare"><span v-if="points != null">{{ points }}</span><span v-else><ion-icon style="font-size: 1em; margin-right: .3em;" src="assets/loaders/puff.svg"></ion-icon></span>&nbsp;punts</div>
@@ -252,6 +250,14 @@ span {
     font-weight: 600;
     color: rgb(29, 29, 29);
     width: 70%;
+}
+.contact {
+    white-space: nowrap;
+    width: 100%;
+    overflow: auto;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
 }
 
 .pointsSquare {
